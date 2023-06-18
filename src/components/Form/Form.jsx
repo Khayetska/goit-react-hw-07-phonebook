@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 import css from './Form.module.css';
 import { selectContacts } from 'redux/selectors';
 import Swal from 'sweetalert2';
@@ -9,22 +9,25 @@ const { form, formLabel, submitBtn, formInput } = css;
 
 const Form = () => {
   const [name, setName] = useState('');
-  const [number, setNumder] = useState('');
+  const [phone, setNumder] = useState('');
 
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
-  const newContact = { name, number };
+  const newContact = { name, phone };
 
   const handleInputChange = evt => {
     const { name, value } = evt.target;
 
     if (name === 'name') setName(value);
-    if (name === 'number') setNumder(value);
+    if (name === 'phone') setNumder(value);
   };
 
   const handleSubmit = evt => {
     evt.preventDefault();
+
+    // const name = evt.target.elements.name.value;
+    // const phone = evt.target.elements.phone.value;
 
     for (const contact of contacts) {
       if (contact.name === name) {
@@ -67,9 +70,9 @@ const Form = () => {
         Number
         <input
           type="tel"
-          name="number"
+          name="phone"
           className={formInput}
-          value={number}
+          value={phone}
           onChange={handleInputChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
